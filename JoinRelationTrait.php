@@ -9,15 +9,18 @@ trait JoinRelationTrait
     {
         $found = false;
 
-        foreach($this->joinWith as $config)
+        if ($this->joinWith)
         {
-            list($with, $eagerLoading, $joinType) = $config;
-
-            if (array_key_exists($key ?? $name, $with))
+            foreach($this->joinWith as $config)
             {
-                $found = true;
+                list($with, $eagerLoading, $joinType) = $config;
 
-                break;
+                if (array_key_exists($key ?? $name, $with))
+                {
+                    $found = true;
+
+                    break;
+                }
             }
         }
 
