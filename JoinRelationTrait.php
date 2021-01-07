@@ -5,16 +5,26 @@ namespace denis909\yii;
 trait JoinRelationTrait
 {
 
-    protected $_joinRelation = [];
-
     public function joinRelation(string $name, $key = null)
     {
-        if (array_search($key ?? $name, $this->_joinRelation) !== false)
+        $found = false;
+
+        foreach($this->joinWith as $config)
+        {
+            list($with, $eagerLoading, $joinType) = $config;
+
+            if (array_key_exists($key ?? $name, $with))
+            {
+                $found = true;
+
+                break;
+            }
+        }
+
+        if ($found)
         {
             return $this;
         }
-
-        $this->_joinRelation[] = $key ?? $name;
 
         if ($key)
         {
